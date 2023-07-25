@@ -1,6 +1,6 @@
 ﻿namespace TicTacToe;
 
-internal class Field
+internal class Field : TuiElement
 {
     private char[] _charArray = new char[] {
         '1', '2', '3',
@@ -50,7 +50,7 @@ internal class Field
             throw new ArgumentException("Invalid cell value.");
         }
     }
-    public void Display()
+    public override void Display()
     {
         Console.WriteLine($"\t {_charArray[0]} | {_charArray[1]} | {_charArray[2]}");
         Console.WriteLine("\t---+---+---");

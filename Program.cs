@@ -6,14 +6,15 @@ internal class Program
     {
         Title title = new("Tic-Tac-Toe");
         Field field = new();
+        Notice notice = new(""); // Will be implemented in the next commit
+        TuiElement[] tuiElements = {title, field};
         byte cellNumber;
         byte playerNumber = 1;
 
         for (byte turn = 1; turn <= 9;)
         {
             Console.Clear();
-            title.Display();
-            field.Display();
+            Render(tuiElements);
             Console.Write($"[Player {playerNumber}] Select cell: ");
             try
             {
@@ -40,8 +41,7 @@ internal class Program
             catch (Exception ex)
             {
                 Console.Clear();
-                title.Display();
-                field.Display();
+                Render(tuiElements);
                 Error(ex.Message);
             }
             if (field.IsCompleteVertical ||
@@ -49,17 +49,15 @@ internal class Program
                     field.IsCompleteDiagonale)
             {
                 Console.Clear();
-                title.Display();
-                field.Display();
-                Notice($"Player {playerNumber} won.");
+                Render(tuiElements);
+                Note($"Player {playerNumber} won.");
                 break;
             }
             else if (turn == 9)
             {
                 Console.Clear();
-                field.Display();
-                title.Display();
-                Notice("Draw.");
+                Render(tuiElements);
+                Note("Draw.");
             }
             turn++;
         }
@@ -77,11 +75,18 @@ internal class Program
         Console.ResetColor();
         Wait();
     }
-    public static void Notice(string message)
+    public static void Note(string message)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"[Notice]: {message}");
         Console.ResetColor();
         Wait();
+    }
+    public static void Render(TuiElement[] elements)
+    {
+        foreach (TuiElement element in elements)
+        {
+            element.Display();
+        }
     }
 }
