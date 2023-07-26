@@ -1,13 +1,13 @@
 ﻿namespace TicTacToe;
 
-public readonly struct Title
+internal class Title : TuiElement
 {
     private readonly string _title;
     public Title(string title)
     {
         _title = title.ToUpper();
     }
-    public readonly void Display()
+    public override void Display()
     {
         Console.WriteLine($"\t{_title}\n");
     }
