@@ -4,14 +4,16 @@ internal class Program
 {
     static void Main()
     {
+        Title title = new("Tic-Tac-Toe");
+        Scoreboard score = new();
+        Field field;
+        Label label = new();
+        byte cellNumber;
         while (true)
         {
-            Title title = new("Tic-Tac-Toe");
-            Field field = new();
-            Label label = new();
-            TuiElement[] tuiElements = { title, field, label };
-            byte cellNumber;
             byte playerNumber = 1;
+            field = new();
+            TuiElement[] tuiElements = { title, score, field, label };
 
             for (byte turn = 1; turn <= 9;)
             {
@@ -30,10 +32,10 @@ internal class Program
                     switch (playerNumber)
                     {
                         case 1:
-                            field.SetToCell('X', cellNumber);
+                            field.FillCell('X', cellNumber);
                             break;
                         case 2:
-                            field.SetToCell('O', cellNumber);
+                            field.FillCell('O', cellNumber);
                             break;
                     }
                     if (field.IsCompleteVertical ||
@@ -45,6 +47,15 @@ internal class Program
                         label.Text = $"[Notice] Player {playerNumber} won.\n";
                         Render(tuiElements);
                         Wait();
+                        switch (playerNumber)
+                        {
+                            case 1:
+                                score.Score1++;
+                                break;
+                            case 2:
+                                score.Score2++;
+                                break;
+                        }
                         break;
                     }
                     else if (turn == 9)
