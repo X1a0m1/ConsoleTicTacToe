@@ -32,6 +32,13 @@ internal class Field : TuiElement
                    (_charArray[2] == _charArray[5] && _charArray[5] == _charArray[8]);
         }
     }
+    public void Clear()
+    {
+        for (byte index = 0; index < _charArray.Length; index++)
+        {
+            _charArray[index] = Convert.ToChar((index + 1).ToString());
+        }
+    }
     public void FillCell(char value, byte index)
     {
         if (value == 'X' || value == 'O')

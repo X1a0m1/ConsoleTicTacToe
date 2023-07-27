@@ -4,22 +4,36 @@ internal class Program
 {
     static void Main()
     {
+        // TUI Elements
         Title title = new("Tic-Tac-Toe");
-        Scoreboard score = new();
-        Field field;
+        Scoreboard scoreboard = new();
+        Field field = new();
         Label label = new();
+        TuiElement[] tuiElements = { title, scoreboard, field, label };
+
+        // Players
+        Player[] players = { new('X'), new('O') };
+        Player player; // Current player
+
+        // Datas
         byte cellNumber;
+
+        // Main cycle
         while (true)
         {
-            byte playerNumber = 1;
-            field = new();
-            TuiElement[] tuiElements = { title, score, field, label };
+            field.Clear();
+            // Update counters
+            scoreboard.LeftCounter = players[0].Score;
+            scoreboard.RightCounter = players[1].Score;
 
+            // Round cycle
             for (byte turn = 1; turn <= 9;)
             {
+                player = turn % 2 != 0 ? players[0] : players[1];
+
                 Console.Clear();
                 label.Color = ConsoleColor.Gray;
-                label.Text = $"[Player {playerNumber}] Select cell: ";
+                label.Text = $"[Player {player.Number}] Select cell: ";
                 Render(tuiElements);
                 try
                 {
@@ -27,35 +41,21 @@ internal class Program
                     cellNumber--;
                     if ((cellNumber > 8) || (cellNumber < 0))
                     {
-                        throw new ArgumentException("Сell with this number does not exist.");
+                        throw new ArgumentOutOfRangeException("Сell with this number does not exist.");
                     }
-                    switch (playerNumber)
-                    {
-                        case 1:
-                            field.FillCell('X', cellNumber);
-                            break;
-                        case 2:
-                            field.FillCell('O', cellNumber);
-                            break;
-                    }
+                    field.FillCell(player.Char, cellNumber);
+
+                    // Win check
                     if (field.IsCompleteVertical ||
                         field.IsCompleteHorizontal ||
                         field.IsCompleteDiagonale)
                     {
                         Console.Clear();
                         label.Color = ConsoleColor.Yellow;
-                        label.Text = $"[Notice] Player {playerNumber} won.\n";
+                        label.Text = $"[Notice] Player {player.Number} won.\n";
                         Render(tuiElements);
                         Wait();
-                        switch (playerNumber)
-                        {
-                            case 1:
-                                score.Score1++;
-                                break;
-                            case 2:
-                                score.Score2++;
-                                break;
-                        }
+                        player.Score++;
                         break;
                     }
                     else if (turn == 9)
@@ -66,7 +66,6 @@ internal class Program
                         Render(tuiElements);
                         Wait();
                     }
-                    playerNumber = playerNumber == 1 ? (byte)2 : (byte)1;
                     turn++;
                 }
                 catch (Exception ex)
