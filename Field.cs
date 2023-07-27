@@ -32,7 +32,14 @@ internal class Field : TuiElement
                    (_charArray[2] == _charArray[5] && _charArray[5] == _charArray[8]);
         }
     }
-    public void SetToCell(char value, byte index)
+    public void Clear()
+    {
+        for (byte index = 0; index < _charArray.Length; index++)
+        {
+            _charArray[index] = Convert.ToChar((index + 1).ToString());
+        }
+    }
+    public void FillCell(char value, byte index)
     {
         if (value == 'X' || value == 'O')
         {
@@ -52,10 +59,12 @@ internal class Field : TuiElement
     }
     public override void Display()
     {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"\t {_charArray[0]} | {_charArray[1]} | {_charArray[2]}");
         Console.WriteLine("\t---+---+---");
         Console.WriteLine($"\t {_charArray[3]} | {_charArray[4]} | {_charArray[5]}");
         Console.WriteLine("\t---+---+---");
         Console.WriteLine($"\t {_charArray[6]} | {_charArray[7]} | {_charArray[8]}\n");
+        Console.ResetColor();
     }
 }
